@@ -1,0 +1,15 @@
+body{
+    background-image: url("/img/greenHillzone.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.painel .clockImg{
+    height: 60px;
+    width: 60px;
+}
+
+.eggManImg{
+    height: 200px;
+    width: 200px;
+}
