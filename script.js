@@ -36,7 +36,10 @@ function loadComics(){
     document.querySelector("#time").textContent = Timer();
 
     setInterval(()=> {
-        document.querySelector("#time").textContent = Timer();
+
+        if(!pause){
+            document.querySelector("#time").textContent = Timer();
+        }
     },1000);
 }
 
@@ -64,6 +67,55 @@ function Timer(){
     return txt
 }
 
+function launch(){
+    let mis
+    let  id
+    let pos = pos_vm
+
+    if(flag1 == 0){
+        mis = document.querySelector("#missil");
+        flag1 = 1
+    }
+    else if(flag2 == 0){
+        mis = document.querySelector("#missil2");
+        flag2 = 1
+    }
+
+    id = setInterval(() => {
+        
+        if(!pause){
+
+            pos -= VEL_M
+            mis.style.top = pos + "px"
+            
+            if(pos < -10) {
+                recarregarMssil()
+                clearInterval(id)
+            }
+        }
+    }, 10);
+}
+
+function recarregarMissil(){
+    let mis1
+    let mis2 
+
+    if(flag2 == 1){
+         mis1 = document.querySelector("#missil1");
+        pos_hm1 = pos_hn + 10
+        mis1.style.left = pos_hm1 + "px"
+        mis1.style.top = pos_vm + "px"
+
+        mis2 = document.querySelector("#missil2");
+        pos_hm2 = pos_hn + 75
+        mis2.style.left = pos_hm2 + "px"
+        mis2.style.top = pos_vm + "px"
+
+        flag1 = 0
+        flag2 = 0
+    }
+}
+
 function press(e){
 
     let plane = document.querySelector("#egg");
@@ -71,6 +123,10 @@ function press(e){
     let missil2 = document.querySelector("#missil2");
 
     switch(e.keyCode){
+
+        case 80:  
+            paused()
+            break
 
         case LEFT:
             if(pos_hn >= 340 && !pause) {
@@ -87,6 +143,12 @@ function press(e){
                  if(flag2 == 0) pos_hm2 += VEL  
             }
             break
+
+        case LAUNCH:
+            if(flag2 == 0 && !pause) {
+                launch()
+            }
+            break
     }
 
     if(!pause) {
@@ -94,4 +156,12 @@ function press(e){
         missil1.style.left = pos_hm1 + "px";
         missil2.style.left = pos_hm2 + "px";
     }
+}
+
+function paused(){
+    let p = document.querySelector("#pause");
+    pause = !pause
+
+    if(pause) p.style.visibility = "visible"
+    else p.style.visibility = "hidden"
 }
